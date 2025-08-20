@@ -28,17 +28,21 @@ func main() {
 			continue
 		}
 		
-		// Handle multiple commands from this connection
-		for {
-			// Read data
-			buf := make([]byte, 1024)
-			_, err = conn.Read(buf)
-			if err != nil {
-				break // Connection closed, accept next client
+		// Handle this connection in a goroutine so we can accept more clients immediately
+		go func(c net.Conn) {
+			defer c.Close()
+			
+			// Handle multiple commands from this connection
+			for {
+				// Read data
+				buf := make([]byte, 1024)
+				_, err := c.Read(buf)
+				if err != nil {
+					break // Connection closed
+				}
+				// Echo the received data back to the client
+				c.Write([]byte("+PONG\r\n"))
 			}
-			// Echo the received data back to the client
-			conn.Write([]byte("+PONG\r\n"))
-		}
-		conn.Close()
+		}(conn)
 	}
 }
