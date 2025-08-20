@@ -21,28 +21,22 @@ func main() {
 		os.Exit(1)
 	}
 	for {
-		// Accept a new client connection
 		conn, err := l.Accept()
 		if err != nil {
 			fmt.Println("Error accepting connection: ", err.Error())
-			continue
+			os.Exit(1)
 		}
-		
-		// Handle this connection in a goroutine so we can accept more clients immediately
-		go func(c net.Conn) {
-			defer c.Close()
-			
-			// Handle multiple commands from this connection
-			for {
-				// Read data
-				buf := make([]byte, 1024)
-				_, err := c.Read(buf)
-				if err != nil {
-					break // Connection closed
-				}
-				// Echo the received data back to the client
-				c.Write([]byte("+PONG\r\n"))
-			}
-		}(conn)
+	}
+
+	for {
+        // Block until we receive an incoming connection
+		// Read data
+		buf := make([]byte, 1024)
+		_, err = conn.Read(buf)
+		if err != nil {
+			return
+		}
+		// Echo the received data back to the client
+		conn.Write([]byte("+PONG\r\n"))
 	}
 }
