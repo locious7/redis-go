@@ -29,7 +29,7 @@ func main() {
 
 	for {
         // Block until we receive an incoming connection
-        conn, err := listener.Accept()
+        conn, err := l.Accept()
         if err != nil {
             fmt.Println("Error:", err)
             continue
