@@ -42,5 +42,6 @@ func main() {
 		}
 		// Echo the received data back to the client
 		conn.Write([]byte("+PONG\r\n"))
+		continue
 	}
 }
