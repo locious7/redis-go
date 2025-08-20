@@ -27,18 +27,13 @@ func main() {
 	}
 
 	for {
-		// Read data from the connection
+		// Read data
 		buf := make([]byte, 1024)
-		_, err := conn.Read(buf)
+		_, err = conn.Read(buf)
 		if err != nil {
-			fmt.Println("Connection closed or error reading:", err)
-			break // Exit the loop when connection closes
-		}
-		// Send PONG response back to the client
-		_, err = conn.Write([]byte("+PONG\r\n"))
-		if err != nil {
-			fmt.Println("Error writing response:", err)
 			break
 		}
+		// Echo the received data back to the client
+		conn.Write([]byte("+PONG\r\n"))
 	}
 }
