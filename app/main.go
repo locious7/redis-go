@@ -25,16 +25,21 @@ func main() {
 		fmt.Println("Error accepting connection: ", err.Error())
 		os.Exit(1)
 	}
+	defer conn.Close() // Ensure connection is closed when main exits
 
 	for {
-        // Block until we receive an incoming connection
-		// Read data
+		// Read data from the connection
 		buf := make([]byte, 1024)
-		_, err = conn.Read(buf)
+		_, err := conn.Read(buf)
 		if err != nil {
-			return
+			fmt.Println("Connection closed or error reading:", err)
+			break // Exit the loop when connection closes
 		}
-		// Echo the received data back to the client
-		conn.Write([]byte("+PONG\r\n"))
+		// Send PONG response back to the client
+		_, err = conn.Write([]byte("+PONG\r\n"))
+		if err != nil {
+			fmt.Println("Error writing response:", err)
+			break
+		}
 	}
 }
