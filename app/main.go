@@ -25,7 +25,6 @@ func main() {
 		fmt.Println("Error accepting connection: ", err.Error())
 		os.Exit(1)
 	}
-	defer conn.Close() // Ensure connection is closed when main exits
 
 	for {
 		// Read data from the connection
