@@ -31,7 +31,7 @@ func main() {
 		buf := make([]byte, 1024)
 		_, err = conn.Read(buf)
 		if err != nil {
-			break
+			return
 		}
 		// Echo the received data back to the client
 		conn.Write([]byte("+PONG\r\n"))
