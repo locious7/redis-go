@@ -29,10 +29,6 @@ func main() {
 
 	for {
         // Block until we receive an incoming connection
-        if err != nil {
-            fmt.Println("Error:", err)
-            continue
-        }
 		// Read data
 		buf := make([]byte, 1024)
 		_, err = conn.Read(buf)
