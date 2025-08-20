@@ -29,7 +29,6 @@ func main() {
 
 	for {
         // Block until we receive an incoming connection
-        conn, err := l.Accept()
         if err != nil {
             fmt.Println("Error:", err)
             continue
@@ -42,6 +41,5 @@ func main() {
 		}
 		// Echo the received data back to the client
 		conn.Write([]byte("+PONG\r\n"))
-		continue
 	}
 }
