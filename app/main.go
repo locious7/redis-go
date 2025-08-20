@@ -20,21 +20,25 @@ func main() {
 		fmt.Println("Failed to bind to port 6379")
 		os.Exit(1)
 	}
-	conn, err := l.Accept()
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err.Error())
-		os.Exit(1)
-	}
-
 	for {
-		// Block until we receive an incoming connection
-		// Read data
-		buf := make([]byte, 1024)
-		_, err = conn.Read(buf)
+		// Accept a new client connection
+		conn, err := l.Accept()
 		if err != nil {
-			return
+			fmt.Println("Error accepting connection: ", err.Error())
+			continue
 		}
-		// Echo the received data back to the client
-		conn.Write([]byte("+PONG\r\n"))
+		
+		// Handle multiple commands from this connection
+		for {
+			// Read data
+			buf := make([]byte, 1024)
+			_, err = conn.Read(buf)
+			if err != nil {
+				break // Connection closed, accept next client
+			}
+			// Echo the received data back to the client
+			conn.Write([]byte("+PONG\r\n"))
+		}
+		conn.Close()
 	}
 }
