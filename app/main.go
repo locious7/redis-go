@@ -27,7 +27,7 @@ func main() {
 	}
 
 	for {
-        // Block until we receive an incoming connection
+		// Block until we receive an incoming connection
 		// Read data
 		buf := make([]byte, 1024)
 		_, err = conn.Read(buf)
