@@ -26,4 +26,21 @@ func main() {
 		os.Exit(1)
 	}
 	conn.Write([]byte("+PONG\r\n"))
+
+	for {
+        // Block until we receive an incoming connection
+        conn, err := listener.Accept()
+        if err != nil {
+            fmt.Println("Error:", err)
+            continue
+        }
+		// Read data
+		buf := make([]byte, 1024)
+		n, err := conn.Read(buf)
+		if err != nil {
+			return
+		}
+		// Echo the received data back to the client
+		conn.Write([]byte("+PONG\r\n"))
+	}
 }
